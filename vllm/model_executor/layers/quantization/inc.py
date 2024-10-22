@@ -8,6 +8,8 @@ from vllm.model_executor.layers.linear import (LinearBase,
                                                UnquantizedLinearMethod)
 from vllm.model_executor.layers.quantization.base_config import (
     QuantizationConfig, QuantizeMethodBase)
+from vllm.model_executor.layers.vocab_parallel_embedding import (
+    UnquantizedEmbeddingMethod, VocabParallelEmbedding)
 
 
 class INCConfig(QuantizationConfig):
@@ -31,6 +33,8 @@ class INCConfig(QuantizationConfig):
             return UnquantizedLinearMethod()
         elif isinstance(layer, FusedMoE):
             return UnquantizedFusedMoEMethod()
+        elif isinstance(layer, VocabParallelEmbedding):
+            return UnquantizedEmbeddingMethod()
         return None
 
     @classmethod

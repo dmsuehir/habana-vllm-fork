@@ -12,6 +12,7 @@ supported_hardware
 auto_awq
 bnb
 gguf
+inc
 int8
 fp8
 quantized_kvcache

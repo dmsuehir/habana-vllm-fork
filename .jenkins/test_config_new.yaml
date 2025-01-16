@@ -1,0 +1,10 @@
+# test_config.yaml
+stages:
+  - name: test_gsm8k_models
+    steps:
+      - name: gsm8k_g3_tp1
+        flavor: g3
+        command: cd .jenkins/lm-eval-harness && bash run-tests.sh -c configs/models-tp1.txt -t 1
+      - name: gsm8k_g3_tp8
+        flavor: g3
+        command: cd .jenkins/lm-eval-harness && bash run-tests.sh -c configs/models-tp8.txt -t 8

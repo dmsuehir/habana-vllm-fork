@@ -1,0 +1,5 @@
+Meta-Llama-3.1-70B-Instruct.yaml
+Meta-Llama-3.1-70B-Instruct-fp8.yaml
+
+Meta-Llama-3.1-405B-Instruct.yaml
+Meta-Llama-3.1-405B-Instruct-fp8.yaml

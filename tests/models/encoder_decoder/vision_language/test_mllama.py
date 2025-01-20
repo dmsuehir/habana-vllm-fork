@@ -97,6 +97,7 @@ def run_test(
     vllm_runner: Type[VllmRunner],
     image_assets: _ImageAssets,
     model: str,
+    enforce_eager: bool,
     *,
     size_factors: List[float],
     dtype: str,
@@ -114,6 +115,7 @@ def run_test(
     vllm_runner: Type[VllmRunner],
     image_assets: _ImageAssets,
     model: str,
+    enforce_eager: bool,
     *,
     sizes: List[Tuple[int, int]],
     dtype: str,
@@ -130,6 +132,7 @@ def run_test(
     vllm_runner: Type[VllmRunner],
     image_assets: _ImageAssets,
     model: str,
+    enforce_eager: bool,
     *,
     size_factors: Optional[List[float]] = None,
     sizes: Optional[List[Tuple[int, int]]] = None,
@@ -144,6 +147,7 @@ def run_test(
         vllm_runner,
         _get_inputs(image_assets, size_factors=size_factors, sizes=sizes),
         model,
+        enforce_eager,
         dtype=dtype,
         max_tokens=max_tokens,
         num_logprobs=num_logprobs,
@@ -157,6 +161,7 @@ def _run_test(
     vllm_runner: Type[VllmRunner],
     inputs: List[Tuple[List[str], PromptImageInput]],
     model: str,
+    enforce_eager: bool,
     *,
     dtype: str,
     max_tokens: int,
@@ -185,7 +190,7 @@ def _run_test(
                      max_num_seqs=2,
                      tensor_parallel_size=tensor_parallel_size,
                      distributed_executor_backend=distributed_executor_backend,
-                     enforce_eager=True,
+                     enforce_eager=enforce_eager,
                      limit_mm_per_prompt={"image": _LIMIT_IMAGE_PER_PROMPT
                                           }) as vllm_model:
         vllm_outputs_per_image = [
@@ -257,10 +262,12 @@ def clear_cache():
 @pytest.mark.parametrize("max_tokens", [128])
 @pytest.mark.parametrize("num_logprobs", [5])
 @pytest.mark.parametrize("attn_backend", LIST_ENC_DEC_SUPPORTED_BACKENDS)
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models_single_leading_image(hf_runner, vllm_runner, image_assets,
                                      model, sizes, dtype, max_tokens,
                                      num_logprobs,
-                                     attn_backend: _Backend) -> None:
+                                     attn_backend: _Backend,
+                                     enforce_eager: bool) -> None:
     with global_force_attn_backend_context_manager(attn_backend):
         if attn_backend == _Backend.FLASH_ATTN:
             # Flash Attention works only with bfloat16 data-type
@@ -270,6 +277,7 @@ def test_models_single_leading_image(hf_runner, vllm_runner, image_assets,
             vllm_runner,
             image_assets,
             model,
+            enforce_eager,
             sizes=sizes,
             dtype=dtype,
             max_tokens=max_tokens,
@@ -285,13 +293,15 @@ def test_models_single_leading_image(hf_runner, vllm_runner, image_assets,
 @pytest.mark.parametrize("dtype", ["bfloat16"])
 @pytest.mark.parametrize("max_tokens", [128])
 @pytest.mark.parametrize("num_logprobs", [5])
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_hpu_models(hf_hpu_runner, vllm_runner, image_assets, model, sizes,
-                    dtype, max_tokens, num_logprobs) -> None:
+                    dtype, max_tokens, num_logprobs, enforce_eager) -> None:
     run_test(
         hf_hpu_runner,
         vllm_runner,
         image_assets,
         model,
+        enforce_eager,
         sizes=sizes,
         dtype=dtype,
         max_tokens=max_tokens,
@@ -307,9 +317,10 @@ def test_hpu_models(hf_hpu_runner, vllm_runner, image_assets, model, sizes,
 @pytest.mark.parametrize("max_tokens", [128])
 @pytest.mark.parametrize("num_logprobs", [5])
 @pytest.mark.parametrize("attn_backend", LIST_ENC_DEC_SUPPORTED_BACKENDS)
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models_multi_leading_images(hf_runner, vllm_runner, image_assets,
                                      model, dtype, max_tokens, num_logprobs,
-                                     attn_backend: _Backend) -> None:
+                                     attn_backend: _Backend, enforce_eager: bool) -> None:
 
     stop_sign = image_assets[0].pil_image
     cherry_blossom = image_assets[1].pil_image
@@ -342,6 +353,7 @@ def test_models_multi_leading_images(hf_runner, vllm_runner, image_assets,
             vllm_runner,
             inputs,
             model,
+            enforce_eager,
             dtype=dtype,
             max_tokens=max_tokens,
             num_logprobs=num_logprobs,
@@ -356,9 +368,10 @@ def test_models_multi_leading_images(hf_runner, vllm_runner, image_assets,
 @pytest.mark.parametrize("max_tokens", [128])
 @pytest.mark.parametrize("num_logprobs", [5])
 @pytest.mark.parametrize("attn_backend", LIST_ENC_DEC_SUPPORTED_BACKENDS)
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models_interleaved_images(hf_runner, vllm_runner, image_assets, model,
                                    dtype, max_tokens, num_logprobs,
-                                   attn_backend: _Backend) -> None:
+                                   attn_backend: _Backend, enforce_eager: bool) -> None:
 
     stop_sign = image_assets[0].pil_image
     cherry_blossom = image_assets[1].pil_image
@@ -382,6 +395,7 @@ def test_models_interleaved_images(hf_runner, vllm_runner, image_assets, model,
             vllm_runner,
             inputs,
             model,
+            enforce_eager,
             dtype=dtype,
             max_tokens=max_tokens,
             num_logprobs=num_logprobs,

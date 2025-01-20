@@ -55,6 +55,10 @@ def test_spec_decode_cuda_graph(vllm_runner, common_llm_kwargs,
 
         # Skip cuda graph recording for fast test.
         "enforce_eager": True,
+    },
+    {
+        "model_name": "JackFram/llama-160m",
+        "enforce_eager": False,
     }])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [
     {
@@ -106,6 +110,12 @@ def test_speculative_model_quantization_config(vllm_runner, common_llm_kwargs,
 
         # Skip cuda graph recording for fast test.
         "enforce_eager": True,
+        "speculative_model": "JackFram/llama-68m",
+        "num_speculative_tokens": 3,
+    },
+    {
+        "model_name": MAIN_MODEL,
+        "enforce_eager": False,
         "speculative_model": "JackFram/llama-68m",
         "num_speculative_tokens": 3,
     }])

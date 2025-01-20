@@ -78,8 +78,9 @@ def _run_generate(input_dir, queue: mp.Queue, **kwargs):
 
 @pytest.mark.parametrize("enable_lora", [False, True])
 @pytest.mark.parametrize("tp_size", [1, 2])
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_sharded_state_loader(enable_lora, tp_size, num_gpus_available,
-                              llama_2_7b_files):
+                              llama_2_7b_files, enforce_eager):
     if num_gpus_available < tp_size:
         pytest.skip(f"Not enough GPUs for tensor parallelism {tp_size}")
 
@@ -96,7 +97,7 @@ def test_sharded_state_loader(enable_lora, tp_size, num_gpus_available,
                             tensor_parallel_size=tp_size,
                             distributed_executor_backend="mp",
                             gpu_memory_utilization=gpu_memory_utilization,
-                            enforce_eager=True,
+                            enforce_eager=enforce_eager,
                         ))
         p.start()
         p.join()

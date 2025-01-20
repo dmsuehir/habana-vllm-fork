@@ -27,9 +27,10 @@ from vllm.platforms import current_platform
       QuantizationType.INT, 2560, True),
      ("nm-testing/asym-w8w8-int8-static-per-tensor-tiny-llama", "tensor",
       QuantizationType.INT, 2560, False)])
-def test_compressed_tensors_w8a8_static_setup(vllm_runner, model_args):
+@pytest.mark.parametrize("enforce_eager", [False, True])
+def test_compressed_tensors_w8a8_static_setup(vllm_runner, model_args, enforce_eager):
     model_path, strategy, quant_type, shape_0, is_symmetric = model_args
-    with vllm_runner(model_path, enforce_eager=True) as llm:
+    with vllm_runner(model_path, enforce_eager=enforce_eager) as llm:
 
         def check_model(model):
             layer = model.model.layers[0]

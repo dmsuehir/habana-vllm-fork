@@ -116,7 +116,8 @@ def test_unstable_prompt_sequence(
 
 
 @pytest.mark.parametrize("model", MODELS)
-def test_fully_cached_prefill_needs_uncached_token(model):
+@pytest.mark.parametrize("enforce_eager", [False, True])
+def test_fully_cached_prefill_needs_uncached_token(model, enforce_eager):
     block_size = 16
     max_num_batched_tokens = 16
     num_output_tokens = 5
@@ -125,7 +126,7 @@ def test_fully_cached_prefill_needs_uncached_token(model):
         model_name=model,
         gpu_memory_utilization=0.7,
         enable_chunked_prefill=True,
-        enforce_eager=True,
+        enforce_eager=enforce_eager,
         enable_prefix_caching=True,
         block_size=block_size,
         max_num_batched_tokens=max_num_batched_tokens,

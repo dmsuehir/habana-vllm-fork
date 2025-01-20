@@ -63,6 +63,7 @@ if not current_platform.is_rocm() and is_quant_method_supported("awq"):
 def check_full_graph_support(model,
                              model_kwargs,
                              optimization_level,
+                             enforce_eager,
                              tp_size=1):
     # make sure these models can be captured in full graph mode
     os.environ["VLLM_TEST_DYNAMO_FULLGRAPH_CAPTURE"] = "1"
@@ -82,7 +83,7 @@ def check_full_graph_support(model,
     ]
     sampling_params = SamplingParams(temperature=0)
     llm = LLM(model=model,
-              enforce_eager=True,
+              enforce_eager=enforce_eager,
               tensor_parallel_size=tp_size,
               disable_custom_all_reduce=True,
               compilation_config=optimization_level,

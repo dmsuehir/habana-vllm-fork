@@ -61,13 +61,14 @@ def test_multi_chat():
 
 @pytest.mark.parametrize("image_urls",
                          [[TEST_IMAGE_URLS[0], TEST_IMAGE_URLS[1]]])
-def test_chat_multi_image(image_urls: List[str]):
+@pytest.mark.parametrize("enforce_eager", [False, True])
+def test_chat_multi_image(image_urls: List[str], enforce_eager: bool):
     llm = LLM(
         model="microsoft/Phi-3.5-vision-instruct",
         dtype="bfloat16",
         max_model_len=4096,
         max_num_seqs=5,
-        enforce_eager=True,
+        enforce_eager=enforce_eager,
         trust_remote_code=True,
         limit_mm_per_prompt={"image": 2},
     )

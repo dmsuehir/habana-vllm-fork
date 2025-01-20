@@ -139,7 +139,7 @@ def start_engine():
 
     return AsyncLLMEngine.from_engine_args(
         AsyncEngineArgs(model="facebook/opt-125m",
-                        enforce_eager=True,
+                        enforce_eager=False,
                         num_scheduler_steps=num_scheduler_steps))
 
 

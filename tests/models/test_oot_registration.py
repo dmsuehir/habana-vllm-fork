@@ -47,7 +47,8 @@ image = ImageAsset("cherry_blossom").pil_image.convert("RGB")
 
 
 @fork_new_process_for_each_test
-def test_oot_registration_multimodal(dummy_llava_path):
+@pytest.mark.parametrize("enforce_eager", [False, True])
+def test_oot_registration_multimodal(dummy_llava_path, enforce_eager):
     os.environ["VLLM_PLUGINS"] = "register_dummy_model"
     prompts = [{
         "prompt": "What's in the image?<image>",
@@ -68,7 +69,7 @@ def test_oot_registration_multimodal(dummy_llava_path):
               trust_remote_code=True,
               gpu_memory_utilization=0.98,
               max_model_len=4096,
-              enforce_eager=True,
+              enforce_eager=enforce_eager,
               limit_mm_per_prompt={"image": 1})
     first_token = llm.get_tokenizer().decode(0)
     outputs = llm.generate(prompts, sampling_params)

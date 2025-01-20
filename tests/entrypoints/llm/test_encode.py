@@ -33,7 +33,7 @@ def llm():
               max_num_batched_tokens=32768,
               tensor_parallel_size=1,
               gpu_memory_utilization=0.75,
-              enforce_eager=True)
+              enforce_eager=False)
 
     with llm.deprecate_legacy_api():
         yield weakref.proxy(llm)

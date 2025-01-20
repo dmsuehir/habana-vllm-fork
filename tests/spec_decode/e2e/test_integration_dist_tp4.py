@@ -21,6 +21,10 @@ SPEC_MODEL = "JackFram/llama-68m"
         "--enforce_eager",
         "--tensor-parallel-size",
         "4",
+    ],
+    [
+        "--tensor-parallel-size",
+        "4",
     ]])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [
     [

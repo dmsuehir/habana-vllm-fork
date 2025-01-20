@@ -39,8 +39,9 @@ def test_max_tokens_none():
     assert len(prompts) == len(outputs)
 
 
-def test_gc():
-    llm = LLM("facebook/opt-125m", enforce_eager=True)
+@pytest.mark.parametrize("enforce_eager", [False, True])
+def test_gc(enforce_eager):
+    llm = LLM("facebook/opt-125m", enforce_eager=enforce_eager)
     del llm
 
     gc.collect()

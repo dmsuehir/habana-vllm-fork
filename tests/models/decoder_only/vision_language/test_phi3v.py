@@ -57,6 +57,7 @@ def run_test(
     vllm_runner: Type[VllmRunner],
     inputs: List[Tuple[List[str], PromptImageInput]],
     model: str,
+    enforce_eager: bool,
     *,
     dtype: str,
     max_tokens: int,
@@ -92,7 +93,7 @@ def run_test(
                      limit_mm_per_prompt={"image": mm_limit},
                      tensor_parallel_size=tensor_parallel_size,
                      distributed_executor_backend=distributed_executor_backend,
-                     enforce_eager=True) as vllm_model:
+                     enforce_eager=enforce_eager) as vllm_model:
         vllm_outputs_per_case = [
             vllm_model.generate_greedy_logprobs(prompts,
                                                 max_tokens,
@@ -147,8 +148,9 @@ def run_test(
 @pytest.mark.parametrize("dtype", [target_dtype])
 @pytest.mark.parametrize("max_tokens", [128])
 @pytest.mark.parametrize("num_logprobs", [10])
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models(hf_runner, vllm_runner, image_assets, model, size_factors,
-                dtype: str, max_tokens: int, num_logprobs: int) -> None:
+                dtype: str, max_tokens: int, num_logprobs: int, enforce_eager: bool) -> None:
     images = [asset.pil_image for asset in image_assets]
 
     inputs_per_image = [(
@@ -161,6 +163,7 @@ def test_models(hf_runner, vllm_runner, image_assets, model, size_factors,
         vllm_runner,
         inputs_per_image,
         model,
+        enforce_eager,
         dtype=dtype,
         max_tokens=max_tokens,
         num_logprobs=num_logprobs,
@@ -171,8 +174,9 @@ def test_models(hf_runner, vllm_runner, image_assets, model, size_factors,
 
 @pytest.mark.parametrize("model", models)
 @pytest.mark.parametrize("dtype", [target_dtype])
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_regression_7840(hf_runner, vllm_runner, image_assets, model,
-                         dtype) -> None:
+                         dtype, enforce_eager) -> None:
     images = [asset.pil_image for asset in image_assets]
 
     inputs_regresion_7840 = [
@@ -185,6 +189,7 @@ def test_regression_7840(hf_runner, vllm_runner, image_assets, model,
         vllm_runner,
         inputs_regresion_7840,
         model,
+        enforce_eager,
         dtype=dtype,
         max_tokens=128,
         num_logprobs=10,
@@ -210,9 +215,10 @@ def test_regression_7840(hf_runner, vllm_runner, image_assets, model,
 @pytest.mark.parametrize("dtype", [target_dtype])
 @pytest.mark.parametrize("max_tokens", [128])
 @pytest.mark.parametrize("num_logprobs", [10])
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_multi_images_models(hf_runner, vllm_runner, image_assets, model,
                              size_factors, dtype: str, max_tokens: int,
-                             num_logprobs: int) -> None:
+                             num_logprobs: int, enforce_eager: bool) -> None:
     images = [asset.pil_image for asset in image_assets]
 
     inputs_per_case = [
@@ -226,6 +232,7 @@ def test_multi_images_models(hf_runner, vllm_runner, image_assets, model,
         vllm_runner,
         inputs_per_case,
         model,
+        enforce_eager,
         dtype=dtype,
         max_tokens=max_tokens,
         num_logprobs=num_logprobs,

@@ -265,6 +265,7 @@ def test_metric_spec_decode(
 @pytest.mark.parametrize("dtype", ["half"])
 @pytest.mark.parametrize("max_tokens", [10])
 @pytest.mark.parametrize("log_interval", [1, 3, 5, 7])
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_metric_spec_decode_interval(
     vllm_runner,
     example_prompts,
@@ -272,6 +273,7 @@ def test_metric_spec_decode_interval(
     dtype: str,
     max_tokens: int,
     log_interval: int,
+    enforce_eager: bool,
 ) -> None:
     k = 5
 
@@ -281,7 +283,7 @@ def test_metric_spec_decode_interval(
                              gpu_memory_utilization=0.4,
                              speculative_model=model,
                              num_speculative_tokens=k,
-                             enforce_eager=True)
+                             enforce_eager=enforce_eager)
 
     engine = LLMEngine.from_engine_args(engine_args)
 

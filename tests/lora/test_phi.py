@@ -1,6 +1,7 @@
 from typing import List
 
 import vllm
+import pytest
 from vllm.lora.request import LoRARequest
 
 MODEL_PATH = "microsoft/phi-2"
@@ -46,14 +47,15 @@ def do_sample(llm: vllm.LLM, lora_path: str, lora_id: int) -> List[str]:
     return generated_texts
 
 
-def test_phi2_lora(phi2_lora_files):
+@pytest.mark.parametrize("enforce_eager", [False, True])
+def test_phi2_lora(phi2_lora_files, enforce_eager):
     # We enable enforce_eager=True here to reduce VRAM usage for lora-test CI,
     # Otherwise, the lora-test will fail due to CUDA OOM.
     llm = vllm.LLM(MODEL_PATH,
                    max_model_len=1024,
                    enable_lora=True,
                    max_loras=2,
-                   enforce_eager=True,
+                   enforce_eager=enforce_eager,
                    enable_chunked_prefill=True)
 
     expected_lora_output = [

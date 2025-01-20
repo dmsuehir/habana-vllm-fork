@@ -91,7 +91,7 @@ class VLMTestInfo(NamedTuple):
     # Exposed options for vLLM runner; we change these in a several tests,
     # but the defaults are derived from VllmRunner & the engine defaults
     # These settings are chosen to avoid OOMs when running in the CI
-    enforce_eager: bool = True
+    enforce_eager: bool = False
     max_model_len: int = 1024
     max_num_seqs: int = 256
     task: TaskOption = "auto"

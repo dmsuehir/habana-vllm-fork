@@ -32,6 +32,7 @@ def _run_test(
     input_texts: List[str],
     input_images: PromptImageInput,
     model: str,
+    enforce_eager: bool,
     *,
     dtype: str,
 ) -> None:
@@ -40,7 +41,7 @@ def _run_test(
     # if we run HF first, the cuda initialization will be done and it
     # will hurt multiprocessing backend with fork method (the default method).
     with vllm_runner(model, task="embed", dtype=dtype,
-                     enforce_eager=True) as vllm_model:
+                     enforce_eager=enforce_eager) as vllm_model:
         vllm_outputs = vllm_model.encode(input_texts, images=input_images)
 
     # use eager mode for hf runner, since phi3_v didn't work with flash_attn
@@ -77,12 +78,14 @@ def _run_test(
 @pytest.mark.core_model
 @pytest.mark.parametrize("model", MODELS)
 @pytest.mark.parametrize("dtype", ["half"])
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models_text(
     hf_runner,
     vllm_runner,
     image_assets,
     model: str,
     dtype: str,
+    enforce_eager: bool
 ) -> None:
     input_texts_images = [(text, None) for text in HF_TEXT_PROMPTS]
     input_texts = [text for text, _ in input_texts_images]
@@ -94,6 +97,7 @@ def test_models_text(
         input_texts,
         input_images,  # type: ignore
         model,
+        enforce_eager,
         dtype=dtype,
     )
 
@@ -102,12 +106,14 @@ def test_models_text(
 @pytest.mark.core_model
 @pytest.mark.parametrize("model", MODELS)
 @pytest.mark.parametrize("dtype", ["half"])
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models_image(
     hf_runner,
     vllm_runner,
     image_assets,
     model: str,
     dtype: str,
+    enforce_eager: bool
 ) -> None:
     input_texts_images = [
         (text, asset.pil_image)
@@ -122,5 +128,6 @@ def test_models_image(
         input_texts,
         input_images,
         model,
+        enforce_eager,
         dtype=dtype,
     )

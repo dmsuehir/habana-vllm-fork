@@ -46,6 +46,7 @@ def run_test(
     vllm_runner: Type[VllmRunner],
     prompts: List[ExplicitEncoderDecoderPrompt],
     model: str,
+    enforce_eager: bool,
     *,
     dtype: str,
     max_tokens: int,
@@ -58,7 +59,7 @@ def run_test(
                      dtype=dtype,
                      tensor_parallel_size=tensor_parallel_size,
                      distributed_executor_backend=distributed_executor_backend,
-                     enforce_eager=True) as vllm_model:
+                     enforce_eager=enforce_eager) as vllm_model:
         vllm_outputs = vllm_model.generate_encoder_decoder_greedy_logprobs(
             prompts, max_tokens, num_logprobs)
 
@@ -88,13 +89,15 @@ def run_test(
 @pytest.mark.parametrize("dtype", ["float", "bfloat16"])
 @pytest.mark.parametrize("max_tokens", [64])
 @pytest.mark.parametrize("num_logprobs", [5])
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models(hf_runner, vllm_runner, model, dtype, max_tokens,
-                num_logprobs) -> None:
+                num_logprobs, enforce_eager) -> None:
     run_test(
         hf_runner,
         vllm_runner,
         PROMPTS,
         model,
+        enforce_eager,
         dtype=dtype,
         max_tokens=max_tokens,
         num_logprobs=num_logprobs,

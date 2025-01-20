@@ -84,6 +84,7 @@ def _run_test(
     input_images: PromptImageInput,
     embed_texts: List[bool],
     model: str,
+    enforce_eager: bool,
     *,
     dtype: str,
 ) -> None:
@@ -95,7 +96,7 @@ def _run_test(
     with vllm_runner(model,
                      task="embed",
                      dtype=dtype,
-                     enforce_eager=True,
+                     enforce_eager=enforce_eager,
                      max_model_len=8192) as vllm_model:
         tokenizer = vllm_model.model.get_tokenizer()
         texts = [
@@ -156,12 +157,14 @@ def _run_test(
 
 @pytest.mark.parametrize("model", MODELS)
 @pytest.mark.parametrize("dtype", ["bfloat16"])
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models_text(
     hf_runner,
     vllm_runner,
     image_assets,
     model: str,
     dtype: str,
+    enforce_eager: bool
 ) -> None:
     input_texts_images = [(text, image_placeholder)
                           for text, image_placeholder in HF_TEXT_PROMPTS]
@@ -176,6 +179,7 @@ def test_models_text(
         input_images,  # type: ignore
         embed_texts,
         model,
+        enforce_eager,
         dtype=dtype,
     )
 
@@ -183,12 +187,14 @@ def test_models_text(
 @large_gpu_test(min_gb=48)
 @pytest.mark.parametrize("model", MODELS)
 @pytest.mark.parametrize("dtype", ["bfloat16"])
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models_image(
     hf_runner,
     vllm_runner,
     image_assets,
     model: str,
     dtype: str,
+    enforce_eager: bool
 ) -> None:
     input_texts_images = [
         (text, asset.pil_image)
@@ -205,5 +211,6 @@ def test_models_image(
         input_images,
         embed_texts,
         model,
+        enforce_eager,
         dtype=dtype,
     )

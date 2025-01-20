@@ -28,7 +28,8 @@ def _create_model_runner(model: str, *args,
                     reason="CPU backend is currently "
                     "unsupported for encoder/ "
                     "decoder models")
-def test_empty_seq_group():
+@pytest.mark.parametrize("enforce_eager", [False, True])
+def test_empty_seq_group(enforce_eager):
     """Verify prepare prompt and decode returns empty output
        for empty seq group list"""
 
@@ -39,7 +40,7 @@ def test_empty_seq_group():
         max_num_batched_tokens=100000,
         max_num_seqs=100000,
         enable_chunked_prefill=False,
-        enforce_eager=True,
+        enforce_eager=enforce_eager,
     )
     seq_group_metadata_list: List[SequenceGroupMetadata] = []
     model_input = model_runner._prepare_model_input_tensors(
@@ -72,7 +73,8 @@ def test_empty_seq_group():
                     "unsupported for encoder/ "
                     "decoder models")
 @pytest.mark.parametrize("batch_size", BATCH_SIZES)
-def test_prepare_prompt(batch_size):
+@pytest.mark.parametrize("enforce_eager", [False, True])
+def test_prepare_prompt(batch_size, enforce_eager):
     '''
     Test the ability of the encoder/decoder model runner subclass to
     produce prefill-phase model inputs & attention metadata.
@@ -98,7 +100,7 @@ def test_prepare_prompt(batch_size):
         max_num_batched_tokens=100000,
         max_num_seqs=100000,
         enable_chunked_prefill=False,
-        enforce_eager=True,
+        enforce_eager=enforce_eager,
     )
 
     seq_lens: List[int] = []
@@ -263,7 +265,8 @@ def test_prepare_prompt(batch_size):
                     "decoder models")
 @pytest.mark.parametrize("batch_size", BATCH_SIZES)
 @pytest.mark.parametrize("multiple_seqs_per_seq_group", [True, False])
-def test_prepare_decode(batch_size, multiple_seqs_per_seq_group):
+@pytest.mark.parametrize("enforce_eager", [False, True])
+def test_prepare_decode(batch_size, multiple_seqs_per_seq_group, enforce_eager):
     '''
     Test the ability of the encoder/decoder model runner subclass to
     produce decode-phase model inputs & attention metadata.
@@ -290,7 +293,7 @@ def test_prepare_decode(batch_size, multiple_seqs_per_seq_group):
         max_num_batched_tokens=100000,
         max_num_seqs=100000,
         enable_chunked_prefill=False,
-        enforce_eager=True,
+        enforce_eager=enforce_eager,
     )
 
     seq_lens: List[int] = []

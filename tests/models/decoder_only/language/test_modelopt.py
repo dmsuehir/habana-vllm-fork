@@ -43,12 +43,13 @@ EXPECTED_STRS_MAP = {
 @pytest.mark.skipif(not is_quant_method_supported("fp8"),
                     reason="fp8 is not supported on this GPU type.")
 @pytest.mark.parametrize("model_name", MODELS)
-def test_models(example_prompts, model_name) -> None:
+@pytest.mark.parametrize("enforce_eager", [False, True])
+def test_models(example_prompts, model_name, enforce_eager) -> None:
     model = LLM(
         model=model_name,
         max_model_len=MAX_MODEL_LEN,
         trust_remote_code=True,
-        enforce_eager=True,
+        enforce_eager=enforce_eager,
         quantization="modelopt",
     )
 

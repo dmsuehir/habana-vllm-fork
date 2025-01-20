@@ -153,14 +153,15 @@ def test_models_distributed(
 
 
 @pytest.mark.skip_v1
-def test_model_with_failure(vllm_runner) -> None:
+@pytest.mark.parametrize("enforce_eager", [False, True])
+def test_model_with_failure(vllm_runner, enforce_eager) -> None:
     try:
         with patch("vllm.model_executor.models.opt.OPTForCausalLM.forward",
                    side_effect=ValueError()):
             with pytest.raises(ValueError) as exc_info:
                 vllm_runner("facebook/opt-125m",
                             dtype="half",
-                            enforce_eager=False,
+                            enforce_eager=enforce_eager,
                             gpu_memory_utilization=0.7)
             matches = re.search(r"input dumped to (.+).pkl",
                                 str(exc_info.value))
@@ -180,13 +181,14 @@ def test_model_with_failure(vllm_runner) -> None:
 
 
 @pytest.mark.skip_v1
-def test_failure_with_async_out_proc(vllm_runner) -> None:
+@pytest.mark.parametrize("enforce_eager", [False, True])
+def test_failure_with_async_out_proc(vllm_runner, enforce_eager) -> None:
 
     filename = None
     try:
         with vllm_runner("facebook/opt-125m",
                          dtype="half",
-                         enforce_eager=False,
+                         enforce_eager=enforce_eager,
                          gpu_memory_utilization=0.7) as vllm_model,\
              patch("vllm.model_executor.models.opt.OPTForCausalLM.forward",
                        side_effect=ValueError()):

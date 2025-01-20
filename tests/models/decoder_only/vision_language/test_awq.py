@@ -21,6 +21,7 @@ def run_awq_test(
     image_assets: _ImageAssets,
     source_model: str,
     quant_model: str,
+    enforce_eager: bool,
     *,
     size_factors: List[float],
     dtype: str,
@@ -47,7 +48,7 @@ def run_awq_test(
                      dtype=dtype,
                      tensor_parallel_size=tensor_parallel_size,
                      distributed_executor_backend=distributed_executor_backend,
-                     enforce_eager=True) as vllm_model:
+                     enforce_eager=enforce_eager) as vllm_model:
         source_outputs_per_image = [
             vllm_model.generate_greedy_logprobs(prompts,
                                                 max_tokens,
@@ -62,7 +63,7 @@ def run_awq_test(
                      dtype=dtype,
                      tensor_parallel_size=tensor_parallel_size,
                      distributed_executor_backend=distributed_executor_backend,
-                     enforce_eager=True) as vllm_model:
+                     enforce_eager=enforce_eager) as vllm_model:
         quant_outputs_per_image = [
             vllm_model.generate_greedy_logprobs(prompts,
                                                 max_tokens,
@@ -104,14 +105,16 @@ def run_awq_test(
 @pytest.mark.parametrize("dtype", ["half"])
 @pytest.mark.parametrize("max_tokens", [128])
 @pytest.mark.parametrize("num_logprobs", [5])
+@pytest.mark.parametrize("enforce_eager", [False, True])
 @torch.inference_mode()
 def test_awq_models(vllm_runner, image_assets, source_model, quant_model,
-                    size_factors, dtype, max_tokens, num_logprobs) -> None:
+                    size_factors, dtype, max_tokens, num_logprobs, enforce_eager) -> None:
     run_awq_test(
         vllm_runner,
         image_assets,
         source_model,
         quant_model,
+        enforce_eager,
         size_factors=size_factors,
         dtype=dtype,
         max_tokens=max_tokens,

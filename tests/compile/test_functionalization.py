@@ -41,10 +41,11 @@ prompts = [
      ("nm-testing/TinyLlama-1.1B-Chat-v1.0-FP8_DYNAMIC-e2e",
       kFp8DynamicTokenSym)])
 @pytest.mark.parametrize("do_fusion", [True, False])
+@pytest.mark.parametrize("enforce_eager", [False, True])
 @pytest.mark.skipif(envs.VLLM_TARGET_DEVICE != "cuda",
                     reason="Only test on CUDA")
 def test_fix_functionalization(model: str, quant_key: QuantKey,
-                               do_fusion: bool):
+                               do_fusion: bool, enforce_eager: bool):
     torch.set_default_device("cuda")
 
     config = CompilationConfig.PassConfig(enable_fusion=do_fusion,
@@ -59,7 +60,7 @@ def test_fix_functionalization(model: str, quant_key: QuantKey,
 
     # instantiate a full engine and manually compile the model 2x
     # (with and without FixFunctionalizationPass)
-    llm = LLM(model=model, enforce_eager=True)
+    llm = LLM(model=model, enforce_eager=enforce_eager)
     model_runner = llm.llm_engine.model_executor.driver_worker.model_runner
     orig_model = model_runner.model
     # TODO mark inputs dynamic? (currently torch.compile is triggered 4x)

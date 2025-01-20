@@ -35,6 +35,7 @@ def run_test(
     prompts: List[ExplicitEncoderDecoderPrompt[str, str]],
     decoder_prompt_type: DecoderPromptType,
     model: str,
+    enforce_eager: bool,
     *,
     dtype: str,
     max_tokens: int,
@@ -128,7 +129,7 @@ def run_test(
                      dtype=dtype,
                      tensor_parallel_size=tensor_parallel_size,
                      distributed_executor_backend=distributed_executor_backend,
-                     enforce_eager=True) as vllm_model:
+                     enforce_eager=enforce_eager) as vllm_model:
         vllm_outputs = vllm_model.generate_encoder_decoder_greedy_logprobs(
             prompts, max_tokens, num_logprobs)
 
@@ -180,8 +181,9 @@ def run_test(
 @pytest.mark.parametrize("max_tokens", [64])
 @pytest.mark.parametrize("num_logprobs", [5])
 @pytest.mark.parametrize("decoder_prompt_type", list(DecoderPromptType))
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models(hf_runner, vllm_runner, example_encoder_decoder_prompts, model,
-                dtype, max_tokens, num_logprobs, decoder_prompt_type) -> None:
+                dtype, max_tokens, num_logprobs, decoder_prompt_type, enforce_eager) -> None:
 
     run_test(
         hf_runner,
@@ -189,6 +191,7 @@ def test_models(hf_runner, vllm_runner, example_encoder_decoder_prompts, model,
         example_encoder_decoder_prompts[decoder_prompt_type],
         decoder_prompt_type,
         model,
+        enforce_eager,
         dtype=dtype,
         max_tokens=max_tokens,
         num_logprobs=num_logprobs,
@@ -203,17 +206,20 @@ def test_models(hf_runner, vllm_runner, example_encoder_decoder_prompts, model,
 @pytest.mark.parametrize("max_tokens", [64])
 @pytest.mark.parametrize("num_logprobs", [5])
 @pytest.mark.parametrize("decoder_prompt_type", [DecoderPromptType.CUSTOM])
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models_distributed(hf_runner, vllm_runner,
                             example_encoder_decoder_prompts,
                             distributed_executor_backend, model, dtype,
                             max_tokens, num_logprobs,
-                            decoder_prompt_type) -> None:
+                            decoder_prompt_type,
+                            enforce_eager) -> None:
     run_test(
         hf_runner,
         vllm_runner,
         example_encoder_decoder_prompts[decoder_prompt_type],
         decoder_prompt_type,
         model,
+        enforce_eager,
         dtype=dtype,
         max_tokens=max_tokens,
         num_logprobs=num_logprobs,

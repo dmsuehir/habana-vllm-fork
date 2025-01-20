@@ -98,6 +98,7 @@ def run_test(
     vllm_runner: Type[VllmRunner],
     prompts_and_audios: List[Tuple[str, str, AudioTuple]],
     model: str,
+    enforce_eager: bool,
     *,
     dtype: str,
     max_tokens: int,
@@ -112,7 +113,7 @@ def run_test(
     # if we run HF first, the cuda initialization will be done and it
     # will hurt multiprocessing backend with fork method (the default method).
 
-    with vllm_runner(model, dtype=dtype, enforce_eager=True,
+    with vllm_runner(model, dtype=dtype, enforce_eager=enforce_eager,
                      **kwargs) as vllm_model:
         vllm_outputs_per_audio = [
             vllm_model.generate_greedy_logprobs([vllm_prompt],
@@ -159,6 +160,7 @@ def run_multi_audio_test(
     vllm_runner: Type[VllmRunner],
     prompts_and_audios: List[Tuple[str, List[AudioTuple]]],
     model: str,
+    enforce_eager: bool,
     *,
     dtype: str,
     max_tokens: int,
@@ -167,7 +169,7 @@ def run_multi_audio_test(
 ):
     with vllm_runner(model,
                      dtype=dtype,
-                     enforce_eager=True,
+                     enforce_eager=enforce_eager,
                      limit_mm_per_prompt={
                          "audio":
                          max((len(audio) for _, audio in prompts_and_audios))
@@ -192,8 +194,9 @@ def run_multi_audio_test(
     pytest.param({}, marks=pytest.mark.cpu_model),
     pytest.param(CHUNKED_PREFILL_KWARGS),
 ])
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models(hf_runner, vllm_runner, audio, dtype: str, max_tokens: int,
-                num_logprobs: int, vllm_kwargs: dict) -> None:
+                num_logprobs: int, vllm_kwargs: dict, enforce_eager: bool) -> None:
 
     vllm_prompt = _get_prompt(1, "Describe the audio above.", VLLM_PLACEHOLDER)
     hf_prompt = _get_prompt(1, "Describe the audio above.", HF_PLACEHOLDER)
@@ -202,6 +205,7 @@ def test_models(hf_runner, vllm_runner, audio, dtype: str, max_tokens: int,
         vllm_runner,
         [(vllm_prompt, hf_prompt, audio.audio_and_sample_rate)],
         MODEL_NAME,
+        enforce_eager,
         dtype=dtype,
         max_tokens=max_tokens,
         num_logprobs=num_logprobs,
@@ -217,9 +221,11 @@ def test_models(hf_runner, vllm_runner, audio, dtype: str, max_tokens: int,
     pytest.param({}, marks=pytest.mark.cpu_model),
     pytest.param(CHUNKED_PREFILL_KWARGS),
 ])
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models_with_multiple_audios(vllm_runner, audio_assets, dtype: str,
                                      max_tokens: int, num_logprobs: int,
-                                     vllm_kwargs: dict) -> None:
+                                     vllm_kwargs: dict,
+                                     enforce_eager: bool) -> None:
 
     vllm_prompt = _get_prompt(len(audio_assets),
                               "Describe each of the audios above.",
@@ -229,6 +235,7 @@ def test_models_with_multiple_audios(vllm_runner, audio_assets, dtype: str,
         [(vllm_prompt, [audio.audio_and_sample_rate
                         for audio in audio_assets])],
         MODEL_NAME,
+        enforce_eager,
         dtype=dtype,
         max_tokens=max_tokens,
         num_logprobs=num_logprobs,

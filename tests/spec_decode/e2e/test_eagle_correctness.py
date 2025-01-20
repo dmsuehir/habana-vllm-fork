@@ -51,6 +51,18 @@ PRECISION = "float32"
 
         # Main model
         "model_name": MAIN_MODEL,
+    },
+    {
+        "enforce_eager": False,
+
+        # Print spec metrics.
+        "disable_log_stats": False,
+
+        # Precision
+        "dtype": PRECISION,
+
+        # Main model
+        "model_name": MAIN_MODEL,
     }])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("baseline_llm_kwargs", [{}])
@@ -82,6 +94,18 @@ def test_eagle_e2e_greedy_correctness(vllm_runner, common_llm_kwargs,
     [{
         # Skip cuda graph recording for fast test.
         "enforce_eager": True,
+
+        # Print spec metrics.
+        "disable_log_stats": False,
+
+        # Precision
+        "dtype": PRECISION,
+
+        # Main model
+        "model_name": MAIN_MODEL,
+    },
+    {
+        "enforce_eager": False,
 
         # Print spec metrics.
         "disable_log_stats": False,
@@ -187,6 +211,19 @@ def test_eagle_e2e_greedy_correctness_cuda_graph(
 
         # Main model
         "model_name": MAIN_MODEL,
+    },
+    {
+        "block_size": 8,
+        # 2 for small prompt, 256//8 for generated.
+        "num_gpu_blocks_override": 2 + 256 // 8,
+        "max_model_len": (2 + 256 // 8) * 8,
+        "enforce_eager": False,
+
+        # Precision
+        "dtype": PRECISION,
+
+        # Main model
+        "model_name": MAIN_MODEL,
     }])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("baseline_llm_kwargs", [{}])
@@ -222,6 +259,15 @@ def test_eagle_e2e_greedy_correctness_with_preemption(
     [{
         # Skip cuda graph recording for fast test.
         "enforce_eager": True,
+
+        # Precision
+        "dtype": PRECISION,
+
+        # Main model
+        "model_name": MAIN_MODEL,
+    },
+    {
+        "enforce_eager": False,
 
         # Precision
         "dtype": PRECISION,
@@ -267,6 +313,15 @@ def test_eagle_different_k(vllm_runner, common_llm_kwargs,
     [{
         # Skip cuda graph recording for fast test.
         "enforce_eager": True,
+
+        # Precision
+        "dtype": PRECISION,
+
+        # Main model
+        "model_name": MAIN_MODEL,
+    },
+    {
+        "enforce_eager": False,
 
         # Precision
         "dtype": PRECISION,

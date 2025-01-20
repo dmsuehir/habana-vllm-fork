@@ -10,11 +10,13 @@ from .utils import TEST_MODELS, check_full_graph_support
 @pytest.mark.parametrize(
     "optimization_level",
     [CompilationLevel.DYNAMO_ONCE, CompilationLevel.PIECEWISE])
+@pytest.mark.parametrize("enforce_eager", [False, True])
 @fork_new_process_for_each_test
-def test_full_graph(model_info, optimization_level):
+def test_full_graph(model_info, optimization_level, enforce_eager):
     model = model_info[0]
     model_kwargs = model_info[1]
     check_full_graph_support(model,
                              model_kwargs,
                              optimization_level,
+                             enforce_eager,
                              tp_size=1)

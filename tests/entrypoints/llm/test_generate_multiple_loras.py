@@ -31,7 +31,7 @@ def llm():
               max_loras=4,
               max_lora_rank=64,
               max_num_seqs=128,
-              enforce_eager=True)
+              enforce_eager=False)
 
     with llm.deprecate_legacy_api():
         yield weakref.proxy(llm)

@@ -277,14 +277,15 @@ def test_tensorizer_with_tp_path_without_template(vllm_runner):
 
 
 @pytest.mark.skipif(torch.cuda.device_count() < 2, reason="Requires 2 GPUs")
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_deserialized_encrypted_vllm_model_with_tp_has_same_outputs(
-        vllm_runner, tmp_path):
+        vllm_runner, tmp_path, enforce_eager):
     model_ref = "EleutherAI/pythia-1.4b"
     # record outputs from un-sharded un-tensorized model
     with vllm_runner(
             model_ref,
             disable_custom_all_reduce=True,
-            enforce_eager=True,
+            enforce_eager=enforce_eager,
     ) as base_model:
         outputs = base_model.generate(prompts, sampling_params)
         base_model.model.llm_engine.model_executor.shutdown()
@@ -303,7 +304,7 @@ def test_deserialized_encrypted_vllm_model_with_tp_has_same_outputs(
             model=model_ref,
             tensor_parallel_size=2,
             disable_custom_all_reduce=True,
-            enforce_eager=True,
+            enforce_eager=enforce_eager,
         ),
         tensorizer_config=tensorizer_config,
     )
@@ -315,7 +316,7 @@ def test_deserialized_encrypted_vllm_model_with_tp_has_same_outputs(
             tensor_parallel_size=2,
             load_format="tensorizer",
             disable_custom_all_reduce=True,
-            enforce_eager=True,
+            enforce_eager=enforce_eager,
             model_loader_extra_config=tensorizer_config) as loaded_vllm_model:
         deserialized_outputs = loaded_vllm_model.generate(
             prompts, sampling_params)

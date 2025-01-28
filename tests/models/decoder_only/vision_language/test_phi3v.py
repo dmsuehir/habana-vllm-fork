@@ -150,7 +150,8 @@ def run_test(
 @pytest.mark.parametrize("num_logprobs", [10])
 @pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models(hf_runner, vllm_runner, image_assets, model, size_factors,
-                dtype: str, max_tokens: int, num_logprobs: int, enforce_eager: bool) -> None:
+                dtype: str, max_tokens: int, num_logprobs: int,
+                enforce_eager: bool) -> None:
     images = [asset.pil_image for asset in image_assets]
 
     inputs_per_image = [(
@@ -175,8 +176,8 @@ def test_models(hf_runner, vllm_runner, image_assets, model, size_factors,
 @pytest.mark.parametrize("model", models)
 @pytest.mark.parametrize("dtype", [target_dtype])
 @pytest.mark.parametrize("enforce_eager", [False, True])
-def test_regression_7840(hf_runner, vllm_runner, image_assets, model,
-                         dtype, enforce_eager) -> None:
+def test_regression_7840(hf_runner, vllm_runner, image_assets, model, dtype,
+                         enforce_eager) -> None:
     images = [asset.pil_image for asset in image_assets]
 
     inputs_regresion_7840 = [

@@ -14,7 +14,8 @@ models = ["llava-hf/llava-1.5-7b-hf"]
 
 @pytest.mark.parametrize("model", models)
 @pytest.mark.parametrize("enforce_eager", [False, True])
-def test_context_length_too_short(vllm_runner, image_assets, model, enforce_eager):
+def test_context_length_too_short(vllm_runner, image_assets, model,
+                                  enforce_eager):
     images = [asset.pil_image for asset in image_assets]
 
     with pytest.raises(ValueError, match="too long to fit into the model"):

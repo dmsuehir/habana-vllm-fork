@@ -1,7 +1,7 @@
 import sys
-import pytest
 from contextlib import nullcontext
 
+import pytest
 from vllm_test_utils import BlameResult, blame
 
 from vllm import LLM, SamplingParams

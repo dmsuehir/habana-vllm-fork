@@ -5,8 +5,8 @@ will never happen again.
 
 """
 import gc
-import pytest
 
+import pytest
 import torch
 
 from vllm import LLM, SamplingParams

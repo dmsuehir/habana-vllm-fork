@@ -158,14 +158,8 @@ def _run_test(
 @pytest.mark.parametrize("model", MODELS)
 @pytest.mark.parametrize("dtype", ["bfloat16"])
 @pytest.mark.parametrize("enforce_eager", [False, True])
-def test_models_text(
-    hf_runner,
-    vllm_runner,
-    image_assets,
-    model: str,
-    dtype: str,
-    enforce_eager: bool
-) -> None:
+def test_models_text(hf_runner, vllm_runner, image_assets, model: str,
+                     dtype: str, enforce_eager: bool) -> None:
     input_texts_images = [(text, image_placeholder)
                           for text, image_placeholder in HF_TEXT_PROMPTS]
     input_texts = [text for text, _ in input_texts_images]
@@ -188,14 +182,8 @@ def test_models_text(
 @pytest.mark.parametrize("model", MODELS)
 @pytest.mark.parametrize("dtype", ["bfloat16"])
 @pytest.mark.parametrize("enforce_eager", [False, True])
-def test_models_image(
-    hf_runner,
-    vllm_runner,
-    image_assets,
-    model: str,
-    dtype: str,
-    enforce_eager: bool
-) -> None:
+def test_models_image(hf_runner, vllm_runner, image_assets, model: str,
+                      dtype: str, enforce_eager: bool) -> None:
     input_texts_images = [
         (text, asset.pil_image)
         for text, asset in zip(HF_IMAGE_PROMPTS, image_assets)

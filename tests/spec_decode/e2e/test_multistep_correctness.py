@@ -48,20 +48,22 @@ from .conftest import (get_output_from_llm_generator,
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        # Use a small model for a fast test.
-        # Note this is repeated in the test body; to initialize a tokenizer.
-        "model": "JackFram/llama-68m",
+    [
+        {
+            # Use a small model for a fast test.
+            # Note this is repeated in the test body; to initialize a tokenizer.
+            "model": "JackFram/llama-68m",
 
-        # Skip cuda graph recording for fast test.
-        "enforce_eager": True,
-    },
-    {
-        # Use a small model for a fast test.
-        # Note this is repeated in the test body; to initialize a tokenizer.
-        "model": "JackFram/llama-68m",
-        "enforce_eager": False,
-    }])
+            # Skip cuda graph recording for fast test.
+            "enforce_eager": True,
+        },
+        {
+            # Use a small model for a fast test.
+            # Note this is repeated in the test body; to initialize a tokenizer.
+            "model": "JackFram/llama-68m",
+            "enforce_eager": False,
+        }
+    ])
 @pytest.mark.parametrize(
     "per_test_common_llm_kwargs",
     [
@@ -133,19 +135,21 @@ def test_spec_decode_e2e_with_detokenization(test_llm_generator,
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        # Skip cuda graph recording for fast test.
-        "enforce_eager": True,
+    [
+        {
+            # Skip cuda graph recording for fast test.
+            "enforce_eager": True,
 
-        # Print spec metrics.
-        "disable_log_stats": False,
-    },
-    {
-        "enforce_eager": False,
+            # Print spec metrics.
+            "disable_log_stats": False,
+        },
+        {
+            "enforce_eager": False,
 
-        # Print spec metrics.
-        "disable_log_stats": False,
-    }])
+            # Print spec metrics.
+            "disable_log_stats": False,
+        }
+    ])
 @pytest.mark.parametrize(
     "per_test_common_llm_kwargs",
     [
@@ -213,19 +217,21 @@ def test_spec_decode_e2e_greedy_correctness_tiny_model_bs1(
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        # Skip cuda graph recording for fast test.
-        "enforce_eager": True,
+    [
+        {
+            # Skip cuda graph recording for fast test.
+            "enforce_eager": True,
 
-        # Print spec metrics.
-        "disable_log_stats": False,
-    },
-    {
-        "enforce_eager": False,
+            # Print spec metrics.
+            "disable_log_stats": False,
+        },
+        {
+            "enforce_eager": False,
 
-        # Print spec metrics.
-        "disable_log_stats": False,
-    }])
+            # Print spec metrics.
+            "disable_log_stats": False,
+        }
+    ])
 @pytest.mark.parametrize(
     "per_test_common_llm_kwargs",
     [
@@ -281,13 +287,15 @@ def test_spec_decode_e2e_greedy_correctness_tiny_model_large_bs(
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        # Skip cuda graph recording for fast test.
-        "enforce_eager": True,
-    },
-    {
-        "enforce_eager": False,
-    }])
+    [
+        {
+            # Skip cuda graph recording for fast test.
+            "enforce_eager": True,
+        },
+        {
+            "enforce_eager": False,
+        }
+    ])
 @pytest.mark.parametrize(
     "per_test_common_llm_kwargs",
     [
@@ -342,24 +350,26 @@ def test_spec_decode_e2e_greedy_correctness_tiny_model_large_bs_diff_output_len(
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        # A "real" model (not tiny).
-        "model_name": "meta-llama/Llama-2-7b-chat-hf",
+    [
+        {
+            # A "real" model (not tiny).
+            "model_name": "meta-llama/Llama-2-7b-chat-hf",
 
-        # Skip cuda graph recording for fast test.
-        "enforce_eager": True,
+            # Skip cuda graph recording for fast test.
+            "enforce_eager": True,
 
-        # Print spec metrics.
-        "disable_log_stats": False,
-    },
-    {
-        # A "real" model (not tiny).
-        "model_name": "meta-llama/Llama-2-7b-chat-hf",
-        "enforce_eager": False,
+            # Print spec metrics.
+            "disable_log_stats": False,
+        },
+        {
+            # A "real" model (not tiny).
+            "model_name": "meta-llama/Llama-2-7b-chat-hf",
+            "enforce_eager": False,
 
-        # Print spec metrics.
-        "disable_log_stats": False,
-    }])
+            # Print spec metrics.
+            "disable_log_stats": False,
+        }
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("baseline_llm_kwargs", [{}])
 @pytest.mark.parametrize("test_llm_kwargs", [
@@ -405,24 +415,26 @@ def test_spec_decode_e2e_greedy_correctness_real_model_bs1(
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        # A "real" model (not tiny).
-        "model_name": "meta-llama/Llama-2-7b-chat-hf",
+    [
+        {
+            # A "real" model (not tiny).
+            "model_name": "meta-llama/Llama-2-7b-chat-hf",
 
-        # Skip cuda graph recording for fast test.
-        "enforce_eager": True,
+            # Skip cuda graph recording for fast test.
+            "enforce_eager": True,
 
-        # Print spec metrics.
-        "disable_log_stats": False,
-    },
-    {
-        # A "real" model (not tiny).
-        "model_name": "meta-llama/Llama-2-7b-chat-hf",
-        "enforce_eager": False,
+            # Print spec metrics.
+            "disable_log_stats": False,
+        },
+        {
+            # A "real" model (not tiny).
+            "model_name": "meta-llama/Llama-2-7b-chat-hf",
+            "enforce_eager": False,
 
-        # Print spec metrics.
-        "disable_log_stats": False,
-    }])
+            # Print spec metrics.
+            "disable_log_stats": False,
+        }
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("baseline_llm_kwargs", [{}])
 @pytest.mark.parametrize("test_llm_kwargs", [
@@ -468,22 +480,24 @@ def test_spec_decode_e2e_greedy_correctness_real_model_large_bs(
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        "block_size": 8,
-        # 2 for small prompt, 256//8 for generated.
-        "num_gpu_blocks_override": 2 + 256 // 8,
-        "max_model_len": (2 + 256 // 8) * 8,
+    [
+        {
+            "block_size": 8,
+            # 2 for small prompt, 256//8 for generated.
+            "num_gpu_blocks_override": 2 + 256 // 8,
+            "max_model_len": (2 + 256 // 8) * 8,
 
-        # Skip cuda graph recording for fast test.
-        "enforce_eager": True,
-    },
-    {
-        "block_size": 8,
-        # 2 for small prompt, 256//8 for generated.
-        "num_gpu_blocks_override": 2 + 256 // 8,
-        "max_model_len": (2 + 256 // 8) * 8,
-        "enforce_eager": False,
-    }])
+            # Skip cuda graph recording for fast test.
+            "enforce_eager": True,
+        },
+        {
+            "block_size": 8,
+            # 2 for small prompt, 256//8 for generated.
+            "num_gpu_blocks_override": 2 + 256 // 8,
+            "max_model_len": (2 + 256 // 8) * 8,
+            "enforce_eager": False,
+        }
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [
     {
         "model_name": "JackFram/llama-160m",
@@ -533,16 +547,18 @@ def test_spec_decode_e2e_greedy_correctness_with_preemption(
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        "model_name": "JackFram/llama-160m",
+    [
+        {
+            "model_name": "JackFram/llama-160m",
 
-        # Skip cuda graph recording for fast test.
-        "enforce_eager": True,
-    },
-    {
-        "model_name": "JackFram/llama-160m",
-        "enforce_eager": False,
-    }])
+            # Skip cuda graph recording for fast test.
+            "enforce_eager": True,
+        },
+        {
+            "model_name": "JackFram/llama-160m",
+            "enforce_eager": False,
+        }
+    ])
 @pytest.mark.parametrize(
     "per_test_common_llm_kwargs",
     [
@@ -602,16 +618,18 @@ def test_spec_decode_different_block_size(vllm_runner, common_llm_kwargs,
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        "model_name": "JackFram/llama-160m",
+    [
+        {
+            "model_name": "JackFram/llama-160m",
 
-        # Skip cuda graph recording for fast test.
-        "enforce_eager": True,
-    },
-    {
-        "model_name": "JackFram/llama-160m",
-        "enforce_eager": False,
-    }])
+            # Skip cuda graph recording for fast test.
+            "enforce_eager": True,
+        },
+        {
+            "model_name": "JackFram/llama-160m",
+            "enforce_eager": False,
+        }
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("baseline_llm_kwargs", [{}])
 @pytest.mark.parametrize(
@@ -668,16 +686,18 @@ def test_skip_speculation(vllm_runner, common_llm_kwargs,
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        "model_name": "JackFram/llama-160m",
+    [
+        {
+            "model_name": "JackFram/llama-160m",
 
-        # Skip cuda graph recording for fast test.
-        "enforce_eager": True,
-    },
-    {
-        "model_name": "JackFram/llama-160m",
-        "enforce_eager": False,
-    }])
+            # Skip cuda graph recording for fast test.
+            "enforce_eager": True,
+        },
+        {
+            "model_name": "JackFram/llama-160m",
+            "enforce_eager": False,
+        }
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("baseline_llm_kwargs", [{}])
 @pytest.mark.parametrize("test_llm_kwargs", [
@@ -719,16 +739,18 @@ def test_disable_speculation(vllm_runner, common_llm_kwargs,
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        "model_name": "JackFram/llama-68m",
+    [
+        {
+            "model_name": "JackFram/llama-68m",
 
-        # Skip cuda graph recording for fast test.
-        "enforce_eager": True,
-    },
-    {
-        "model_name": "JackFram/llama-68m",
-        "enforce_eager": False,
-    }])
+            # Skip cuda graph recording for fast test.
+            "enforce_eager": True,
+        },
+        {
+            "model_name": "JackFram/llama-68m",
+            "enforce_eager": False,
+        }
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("baseline_llm_kwargs", [{}])
 @pytest.mark.parametrize(
@@ -776,16 +798,18 @@ def test_many_k(vllm_runner, common_llm_kwargs, per_test_common_llm_kwargs,
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        "model_name": "JackFram/llama-160m",
+    [
+        {
+            "model_name": "JackFram/llama-160m",
 
-        # Skip cuda graph recording for fast test.
-        "enforce_eager": True,
-    },
-    {
-        "model_name": "JackFram/llama-160m",
-        "enforce_eager": False,
-    }])
+            # Skip cuda graph recording for fast test.
+            "enforce_eager": True,
+        },
+        {
+            "model_name": "JackFram/llama-160m",
+            "enforce_eager": False,
+        }
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("baseline_llm_kwargs", [{}])
 @pytest.mark.parametrize(

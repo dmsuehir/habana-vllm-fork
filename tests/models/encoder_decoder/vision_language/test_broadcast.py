@@ -8,8 +8,9 @@ from ....utils import multi_gpu_test
 @pytest.mark.parametrize("model", [
     "meta-llama/Llama-3.2-11B-Vision-Instruct",
 ])
+@pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models(hf_runner, vllm_runner, image_assets,
-                distributed_executor_backend, model) -> None:
+                distributed_executor_backend, model, enforce_eager) -> None:
 
     dtype = "half"
     max_tokens = 5
@@ -26,6 +27,7 @@ def test_models(hf_runner, vllm_runner, image_assets,
         vllm_runner,
         image_assets,
         model=models[0],
+        enforce_eager=enforce_eager,
         size_factors=[0.25, 0.5, 1.0],
         dtype=dtype,
         max_tokens=max_tokens,

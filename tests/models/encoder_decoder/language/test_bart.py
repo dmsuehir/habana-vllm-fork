@@ -183,7 +183,8 @@ def run_test(
 @pytest.mark.parametrize("decoder_prompt_type", list(DecoderPromptType))
 @pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models(hf_runner, vllm_runner, example_encoder_decoder_prompts, model,
-                dtype, max_tokens, num_logprobs, decoder_prompt_type, enforce_eager) -> None:
+                dtype, max_tokens, num_logprobs, decoder_prompt_type,
+                enforce_eager) -> None:
 
     run_test(
         hf_runner,
@@ -210,8 +211,7 @@ def test_models(hf_runner, vllm_runner, example_encoder_decoder_prompts, model,
 def test_models_distributed(hf_runner, vllm_runner,
                             example_encoder_decoder_prompts,
                             distributed_executor_backend, model, dtype,
-                            max_tokens, num_logprobs,
-                            decoder_prompt_type,
+                            max_tokens, num_logprobs, decoder_prompt_type,
                             enforce_eager) -> None:
     run_test(
         hf_runner,

@@ -10,16 +10,18 @@ from .conftest import run_equality_correctness_test
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        "model_name": "JackFram/llama-160m",
+    [
+        {
+            "model_name": "JackFram/llama-160m",
 
-        # Skip cuda graph recording for fast test.
-        "enforce_eager": True
-    },
-    {
-        "model_name": "JackFram/llama-160m",
-        "enforce_eager": False
-    }])
+            # Skip cuda graph recording for fast test.
+            "enforce_eager": True
+        },
+        {
+            "model_name": "JackFram/llama-160m",
+            "enforce_eager": False
+        }
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("baseline_llm_kwargs", [{}])
 @pytest.mark.parametrize("test_llm_kwargs",
@@ -67,16 +69,18 @@ def test_logprobs_equality(vllm_runner, common_llm_kwargs,
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        "model_name": "JackFram/llama-68m",
+    [
+        {
+            "model_name": "JackFram/llama-68m",
 
-        # Skip cuda graph recording for fast test.
-        "enforce_eager": True,
-    },
-    {
-        "model_name": "JackFram/llama-68m",
-        "enforce_eager": False,
-    }])
+            # Skip cuda graph recording for fast test.
+            "enforce_eager": True,
+        },
+        {
+            "model_name": "JackFram/llama-68m",
+            "enforce_eager": False,
+        }
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("baseline_llm_kwargs", [{}])
 @pytest.mark.parametrize("test_llm_kwargs",
@@ -120,16 +124,18 @@ def test_logprobs_different_k(vllm_runner, common_llm_kwargs,
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        "model_name": "JackFram/llama-68m",
+    [
+        {
+            "model_name": "JackFram/llama-68m",
 
-        # Skip cuda graph recording for fast test.
-        "enforce_eager": True,
-    },
-    {
-        "model_name": "JackFram/llama-68m",
-        "enforce_eager": False,
-    }])
+            # Skip cuda graph recording for fast test.
+            "enforce_eager": True,
+        },
+        {
+            "model_name": "JackFram/llama-68m",
+            "enforce_eager": False,
+        }
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("baseline_llm_kwargs", [{}])
 @pytest.mark.parametrize(
@@ -175,16 +181,18 @@ def test_logprobs_when_skip_speculation(vllm_runner, common_llm_kwargs,
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        "model_name": "JackFram/llama-68m",
+    [
+        {
+            "model_name": "JackFram/llama-68m",
 
-        # Skip cuda graph recording for fast test.
-        "enforce_eager": True,
-    },
-    {
-        "model_name": "JackFram/llama-68m",
-        "enforce_eager": False,
-    }])
+            # Skip cuda graph recording for fast test.
+            "enforce_eager": True,
+        },
+        {
+            "model_name": "JackFram/llama-68m",
+            "enforce_eager": False,
+        }
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("baseline_llm_kwargs", [{}])
 @pytest.mark.parametrize("test_llm_kwargs",
@@ -255,15 +263,17 @@ def test_logprobs_temp_1(vllm_runner, common_llm_kwargs,
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        "model_name": "JackFram/llama-160m",
-        # Skip cuda graph recording for fast test.
-        "enforce_eager": True,
-    },
-    {
-        "model_name": "JackFram/llama-160m",
-        "enforce_eager": False,
-    }])
+    [
+        {
+            "model_name": "JackFram/llama-160m",
+            # Skip cuda graph recording for fast test.
+            "enforce_eager": True,
+        },
+        {
+            "model_name": "JackFram/llama-160m",
+            "enforce_eager": False,
+        }
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("baseline_llm_kwargs", [{}])
 @pytest.mark.parametrize("test_llm_kwargs",

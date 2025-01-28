@@ -1,7 +1,8 @@
 from typing import List
 
-import vllm
 import pytest
+
+import vllm
 from vllm.lora.request import LoRARequest
 
 MODEL_PATH = "microsoft/phi-2"

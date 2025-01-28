@@ -90,8 +90,8 @@ def run_test(
 @pytest.mark.parametrize("max_tokens", [64])
 @pytest.mark.parametrize("num_logprobs", [5])
 @pytest.mark.parametrize("enforce_eager", [False, True])
-def test_models(hf_runner, vllm_runner, model, dtype, max_tokens,
-                num_logprobs, enforce_eager) -> None:
+def test_models(hf_runner, vllm_runner, model, dtype, max_tokens, num_logprobs,
+                enforce_eager) -> None:
     run_test(
         hf_runner,
         vllm_runner,

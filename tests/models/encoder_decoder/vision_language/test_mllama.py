@@ -265,8 +265,7 @@ def clear_cache():
 @pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models_single_leading_image(hf_runner, vllm_runner, image_assets,
                                      model, sizes, dtype, max_tokens,
-                                     num_logprobs,
-                                     attn_backend: _Backend,
+                                     num_logprobs, attn_backend: _Backend,
                                      enforce_eager: bool) -> None:
     with global_force_attn_backend_context_manager(attn_backend):
         if attn_backend == _Backend.FLASH_ATTN:
@@ -320,7 +319,8 @@ def test_hpu_models(hf_hpu_runner, vllm_runner, image_assets, model, sizes,
 @pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models_multi_leading_images(hf_runner, vllm_runner, image_assets,
                                      model, dtype, max_tokens, num_logprobs,
-                                     attn_backend: _Backend, enforce_eager: bool) -> None:
+                                     attn_backend: _Backend,
+                                     enforce_eager: bool) -> None:
 
     stop_sign = image_assets[0].pil_image
     cherry_blossom = image_assets[1].pil_image
@@ -371,7 +371,8 @@ def test_models_multi_leading_images(hf_runner, vllm_runner, image_assets,
 @pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models_interleaved_images(hf_runner, vllm_runner, image_assets, model,
                                    dtype, max_tokens, num_logprobs,
-                                   attn_backend: _Backend, enforce_eager: bool) -> None:
+                                   attn_backend: _Backend,
+                                   enforce_eager: bool) -> None:
 
     stop_sign = image_assets[0].pil_image
     cherry_blossom = image_assets[1].pil_image

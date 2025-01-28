@@ -108,7 +108,8 @@ def run_awq_test(
 @pytest.mark.parametrize("enforce_eager", [False, True])
 @torch.inference_mode()
 def test_awq_models(vllm_runner, image_assets, source_model, quant_model,
-                    size_factors, dtype, max_tokens, num_logprobs, enforce_eager) -> None:
+                    size_factors, dtype, max_tokens, num_logprobs,
+                    enforce_eager) -> None:
     run_awq_test(
         vllm_runner,
         image_assets,

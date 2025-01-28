@@ -9,26 +9,28 @@ from .conftest import get_token_ids_from_llm_generator
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        # Use a small model for a fast test.
-        "model": "facebook/opt-125m",
+    [
+        {
+            # Use a small model for a fast test.
+            "model": "facebook/opt-125m",
 
-        # skip cuda graph creation for fast test.
-        "enforce_eager": True,
+            # skip cuda graph creation for fast test.
+            "enforce_eager": True,
 
-        # Allow only 5 sequences of ~1024 tokens in worst case.
-        "block_size": 16,
-        "num_gpu_blocks_override": 5 * (64 + 1),
-    },
-    {
-        # Use a small model for a fast test.
-        "model": "facebook/opt-125m",
-        "enforce_eager": False,
+            # Allow only 5 sequences of ~1024 tokens in worst case.
+            "block_size": 16,
+            "num_gpu_blocks_override": 5 * (64 + 1),
+        },
+        {
+            # Use a small model for a fast test.
+            "model": "facebook/opt-125m",
+            "enforce_eager": False,
 
-        # Allow only 5 sequences of ~1024 tokens in worst case.
-        "block_size": 16,
-        "num_gpu_blocks_override": 5 * (64 + 1),
-    }])
+            # Allow only 5 sequences of ~1024 tokens in worst case.
+            "block_size": 16,
+            "num_gpu_blocks_override": 5 * (64 + 1),
+        }
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("baseline_llm_kwargs", [{}])
 @pytest.mark.parametrize("test_llm_kwargs", [{
@@ -94,26 +96,28 @@ def test_block_manager_with_preemption(baseline_llm_generator,
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        # Use a small model for a fast test.
-        "model": "facebook/opt-125m",
+    [
+        {
+            # Use a small model for a fast test.
+            "model": "facebook/opt-125m",
 
-        # Our prompts will generate 128 tokens; since the prompts themselves are
-        # small, we don't need much KV space beyond 128.
-        "max_model_len": 160,
+            # Our prompts will generate 128 tokens; since the prompts
+            # themselves are small, we don't need much KV space beyond 128.
+            "max_model_len": 160,
 
-        # skip cuda graph creation for fast test.
-        "enforce_eager": True,
-    },
-    {
-        # Use a small model for a fast test.
-        "model": "facebook/opt-125m",
+            # skip cuda graph creation for fast test.
+            "enforce_eager": True,
+        },
+        {
+            # Use a small model for a fast test.
+            "model": "facebook/opt-125m",
 
-        # Our prompts will generate 128 tokens; since the prompts themselves are
-        # small, we don't need much KV space beyond 128.
-        "max_model_len": 160,
-        "enforce_eager": False,
-    }])
+            # Our prompts will generate 128 tokens; since the prompts
+            # themselves are small, we don't need much KV space beyond 128.
+            "max_model_len": 160,
+            "enforce_eager": False,
+        }
+    ])
 @pytest.mark.parametrize(
     "per_test_common_llm_kwargs",
     [
@@ -283,32 +287,34 @@ def test_chunked_prefill_block_manager(baseline_llm_generator,
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        # Use a small model for a fast test.
-        "model": "facebook/opt-125m",
+    [
+        {
+            # Use a small model for a fast test.
+            "model": "facebook/opt-125m",
 
-        # skip cuda graph creation for fast test.
-        "enforce_eager": True,
+            # skip cuda graph creation for fast test.
+            "enforce_eager": True,
 
-        # Allow only 5 sequences of ~1024 tokens in worst case.
-        "block_size": 16,
-        "num_gpu_blocks_override": 5 * (64 + 1),
+            # Allow only 5 sequences of ~1024 tokens in worst case.
+            "block_size": 16,
+            "num_gpu_blocks_override": 5 * (64 + 1),
 
-        # Enable prefill cache
-        "enable_prefix_caching": True,
-    },
-    {
-        # Use a small model for a fast test.
-        "model": "facebook/opt-125m",
-        "enforce_eager": False,
+            # Enable prefill cache
+            "enable_prefix_caching": True,
+        },
+        {
+            # Use a small model for a fast test.
+            "model": "facebook/opt-125m",
+            "enforce_eager": False,
 
-        # Allow only 5 sequences of ~1024 tokens in worst case.
-        "block_size": 16,
-        "num_gpu_blocks_override": 5 * (64 + 1),
+            # Allow only 5 sequences of ~1024 tokens in worst case.
+            "block_size": 16,
+            "num_gpu_blocks_override": 5 * (64 + 1),
 
-        # Enable prefill cache
-        "enable_prefix_caching": True,
-    }])
+            # Enable prefill cache
+            "enable_prefix_caching": True,
+        }
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("baseline_llm_kwargs", [{}])
 @pytest.mark.parametrize("test_llm_kwargs", [{
@@ -376,26 +382,28 @@ def test_block_manager_prefix_caching_enabled_with_preemption(
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        # Use a small model for a fast test.
-        "model": "facebook/opt-125m",
+    [
+        {
+            # Use a small model for a fast test.
+            "model": "facebook/opt-125m",
 
-        # skip cuda graph creation for fast test.
-        "enforce_eager": True,
+            # skip cuda graph creation for fast test.
+            "enforce_eager": True,
 
-        # Allow only 5 sequences of ~1024 tokens in worst case.
-        "block_size": 16,
-        "num_gpu_blocks_override": 5 * (64 + 1),
-    },
-    {
-        # Use a small model for a fast test.
-        "model": "facebook/opt-125m",
-        "enforce_eager": False,
+            # Allow only 5 sequences of ~1024 tokens in worst case.
+            "block_size": 16,
+            "num_gpu_blocks_override": 5 * (64 + 1),
+        },
+        {
+            # Use a small model for a fast test.
+            "model": "facebook/opt-125m",
+            "enforce_eager": False,
 
-        # Allow only 5 sequences of ~1024 tokens in worst case.
-        "block_size": 16,
-        "num_gpu_blocks_override": 5 * (64 + 1),
-    }])
+            # Allow only 5 sequences of ~1024 tokens in worst case.
+            "block_size": 16,
+            "num_gpu_blocks_override": 5 * (64 + 1),
+        }
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("baseline_llm_kwargs", [{
     "enable_prefix_caching": False
@@ -459,28 +467,30 @@ def test_auto_prefix_caching_with_preemption(baseline_llm_generator,
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        # Use a small model for a fast test.
-        "model": "facebook/opt-125m",
+    [
+        {
+            # Use a small model for a fast test.
+            "model": "facebook/opt-125m",
 
-        # skip cuda graph creation for fast test.
-        "enforce_eager": True,
+            # skip cuda graph creation for fast test.
+            "enforce_eager": True,
 
-        # we keep the blocks small, so that hit eviction quickly
-        "max_model_len": 48,
-        "block_size": 16,
-        "num_gpu_blocks_override": 3,
-    },
-    {
-        # Use a small model for a fast test.
-        "model": "facebook/opt-125m",
-        "enforce_eager": False,
+            # we keep the blocks small, so that hit eviction quickly
+            "max_model_len": 48,
+            "block_size": 16,
+            "num_gpu_blocks_override": 3,
+        },
+        {
+            # Use a small model for a fast test.
+            "model": "facebook/opt-125m",
+            "enforce_eager": False,
 
-        # we keep the blocks small, so that hit eviction quickly
-        "max_model_len": 48,
-        "block_size": 16,
-        "num_gpu_blocks_override": 3,
-    }])
+            # we keep the blocks small, so that hit eviction quickly
+            "max_model_len": 48,
+            "block_size": 16,
+            "num_gpu_blocks_override": 3,
+        }
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("baseline_llm_kwargs", [{
     "enable_prefix_caching": False

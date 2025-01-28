@@ -16,16 +16,18 @@ SPEC_MODEL = "JackFram/llama-68m"
                     reason="Need at least 4 GPUs to run the test.")
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [[
-        # Skip cuda graph recording for fast test.
-        "--enforce_eager",
-        "--tensor-parallel-size",
-        "4",
-    ],
     [
-        "--tensor-parallel-size",
-        "4",
-    ]])
+        [
+            # Skip cuda graph recording for fast test.
+            "--enforce_eager",
+            "--tensor-parallel-size",
+            "4",
+        ],
+        [
+            "--tensor-parallel-size",
+            "4",
+        ]
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [
     [
         "--speculative-model",

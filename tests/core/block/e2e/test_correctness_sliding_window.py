@@ -15,22 +15,24 @@ BLOCK_SIZE = 16
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        "model": MODEL,
+    [
+        {
+            "model": MODEL,
 
-        # skip cuda graph creation for fast test.
-        "enforce_eager": True,
-        "block_size": BLOCK_SIZE,
-        # needed due to https://github.com/vllm-project/vllm/issues/1908#issuecomment-2101122008
-        "num_gpu_blocks_override": 100000 // BLOCK_SIZE,
-    },
-    {
-        "model": MODEL,
-        "enforce_eager": False,
-        "block_size": BLOCK_SIZE,
-        # needed due to https://github.com/vllm-project/vllm/issues/1908#issuecomment-2101122008
-        "num_gpu_blocks_override": 100000 // BLOCK_SIZE,
-    }])
+            # skip cuda graph creation for fast test.
+            "enforce_eager": True,
+            "block_size": BLOCK_SIZE,
+            # needed due to https://github.com/vllm-project/vllm/issues/1908#issuecomment-2101122008
+            "num_gpu_blocks_override": 100000 // BLOCK_SIZE,
+        },
+        {
+            "model": MODEL,
+            "enforce_eager": False,
+            "block_size": BLOCK_SIZE,
+            # needed due to https://github.com/vllm-project/vllm/issues/1908#issuecomment-2101122008
+            "num_gpu_blocks_override": 100000 // BLOCK_SIZE,
+        }
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("baseline_llm_kwargs", [{}])
 @pytest.mark.parametrize("test_llm_kwargs", [{}])
@@ -83,20 +85,22 @@ def test_sliding_window_retrival(baseline_llm_generator, test_llm_generator,
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        "model": MODEL,
+    [
+        {
+            "model": MODEL,
 
-        # skip cuda graph creation for fast test.
-        "enforce_eager": True,
-        "block_size": BLOCK_SIZE,
-        "num_gpu_blocks_override": 100000 // BLOCK_SIZE,
-    },
-    {
-        "model": MODEL,
-        "enforce_eager": False,
-        "block_size": BLOCK_SIZE,
-        "num_gpu_blocks_override": 100000 // BLOCK_SIZE,
-    }])
+            # skip cuda graph creation for fast test.
+            "enforce_eager": True,
+            "block_size": BLOCK_SIZE,
+            "num_gpu_blocks_override": 100000 // BLOCK_SIZE,
+        },
+        {
+            "model": MODEL,
+            "enforce_eager": False,
+            "block_size": BLOCK_SIZE,
+            "num_gpu_blocks_override": 100000 // BLOCK_SIZE,
+        }
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("test_llm_kwargs", [{"enable_chunked_prefill": True}])
 @pytest.mark.parametrize("batch_size", [5])

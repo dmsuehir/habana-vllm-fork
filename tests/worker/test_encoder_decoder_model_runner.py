@@ -266,7 +266,8 @@ def test_prepare_prompt(batch_size, enforce_eager):
 @pytest.mark.parametrize("batch_size", BATCH_SIZES)
 @pytest.mark.parametrize("multiple_seqs_per_seq_group", [True, False])
 @pytest.mark.parametrize("enforce_eager", [False, True])
-def test_prepare_decode(batch_size, multiple_seqs_per_seq_group, enforce_eager):
+def test_prepare_decode(batch_size, multiple_seqs_per_seq_group,
+                        enforce_eager):
     '''
     Test the ability of the encoder/decoder model runner subclass to
     produce decode-phase model inputs & attention metadata.

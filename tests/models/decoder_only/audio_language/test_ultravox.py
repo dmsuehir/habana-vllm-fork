@@ -196,7 +196,8 @@ def run_multi_audio_test(
 ])
 @pytest.mark.parametrize("enforce_eager", [False, True])
 def test_models(hf_runner, vllm_runner, audio, dtype: str, max_tokens: int,
-                num_logprobs: int, vllm_kwargs: dict, enforce_eager: bool) -> None:
+                num_logprobs: int, vllm_kwargs: dict,
+                enforce_eager: bool) -> None:
 
     vllm_prompt = _get_prompt(1, "Describe the audio above.", VLLM_PLACEHOLDER)
     hf_prompt = _get_prompt(1, "Describe the audio above.", HF_PLACEHOLDER)

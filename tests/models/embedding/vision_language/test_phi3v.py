@@ -40,7 +40,9 @@ def _run_test(
     # vLLM needs a fresh new process without cuda initialization.
     # if we run HF first, the cuda initialization will be done and it
     # will hurt multiprocessing backend with fork method (the default method).
-    with vllm_runner(model, task="embed", dtype=dtype,
+    with vllm_runner(model,
+                     task="embed",
+                     dtype=dtype,
                      enforce_eager=enforce_eager) as vllm_model:
         vllm_outputs = vllm_model.encode(input_texts, images=input_images)
 
@@ -79,14 +81,8 @@ def _run_test(
 @pytest.mark.parametrize("model", MODELS)
 @pytest.mark.parametrize("dtype", ["half"])
 @pytest.mark.parametrize("enforce_eager", [False, True])
-def test_models_text(
-    hf_runner,
-    vllm_runner,
-    image_assets,
-    model: str,
-    dtype: str,
-    enforce_eager: bool
-) -> None:
+def test_models_text(hf_runner, vllm_runner, image_assets, model: str,
+                     dtype: str, enforce_eager: bool) -> None:
     input_texts_images = [(text, None) for text in HF_TEXT_PROMPTS]
     input_texts = [text for text, _ in input_texts_images]
     input_images = [image for _, image in input_texts_images]
@@ -107,14 +103,8 @@ def test_models_text(
 @pytest.mark.parametrize("model", MODELS)
 @pytest.mark.parametrize("dtype", ["half"])
 @pytest.mark.parametrize("enforce_eager", [False, True])
-def test_models_image(
-    hf_runner,
-    vllm_runner,
-    image_assets,
-    model: str,
-    dtype: str,
-    enforce_eager: bool
-) -> None:
+def test_models_image(hf_runner, vllm_runner, image_assets, model: str,
+                      dtype: str, enforce_eager: bool) -> None:
     input_texts_images = [
         (text, asset.pil_image)
         for text, asset in zip(HF_IMAGE_PROMPTS, image_assets)

@@ -11,28 +11,30 @@ SPEC_MODEL = "JackFram/llama-160m"
 
 @pytest.mark.parametrize(
     "common_llm_kwargs",
-    [{
-        "model_name": "JackFram/llama-68m",
+    [
+        {
+            "model_name": "JackFram/llama-68m",
 
-        # Skip cuda graph recording for fast test.
-        "enforce_eager": True,
+            # Skip cuda graph recording for fast test.
+            "enforce_eager": True,
 
-        # speculative model
-        "speculative_model": "JackFram/llama-160m",
+            # speculative model
+            "speculative_model": "JackFram/llama-160m",
 
-        # num speculative tokens
-        "num_speculative_tokens": 3,
-    },
-    {
-        "model_name": "JackFram/llama-68m",
-        "enforce_eager": False,
+            # num speculative tokens
+            "num_speculative_tokens": 3,
+        },
+        {
+            "model_name": "JackFram/llama-68m",
+            "enforce_eager": False,
 
-        # speculative model
-        "speculative_model": "JackFram/llama-160m",
+            # speculative model
+            "speculative_model": "JackFram/llama-160m",
 
-        # num speculative tokens
-        "num_speculative_tokens": 3,
-    }])
+            # num speculative tokens
+            "num_speculative_tokens": 3,
+        }
+    ])
 @pytest.mark.parametrize("per_test_common_llm_kwargs", [{}])
 @pytest.mark.parametrize("baseline_llm_kwargs", [{"seed": 1}])
 @pytest.mark.parametrize("test_llm_kwargs", [{"seed": 5}])

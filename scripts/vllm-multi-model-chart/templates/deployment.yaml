@@ -22,7 +22,7 @@ spec:
       - name: {{ .Release.Name }}-container
         securityContext:
           {{- toYaml .Values.securityContext | nindent 10 }}
-        image:  "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        image:  "{{ required "Required value 'image.repository' must be defined in your values.yaml file" .Values.image.repository }}:{{ required "Required value 'image.tag' must be defined in your values.yaml file" .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         {{- with .Values.command }}
         command:
@@ -37,7 +37,7 @@ spec:
           {{- toYaml . | nindent 10 }}
         {{- end }}
         env:
-        {{- if .Values.secret.encodedToken}}
+        {{- if .Values.secret.hfToken}}
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom:
             secretKeyRef:

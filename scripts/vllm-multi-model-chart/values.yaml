@@ -11,8 +11,8 @@ image:
   pullPolicy: IfNotPresent
 
 secret:
-  # -- Hugging Face token encoded using base64.
-  encodedToken: 
+  # -- Hugging Face token
+  hfToken: 
 
 # -- Optional [image pull secret](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/) to pull from a private registry
 imagePullSecrets: []

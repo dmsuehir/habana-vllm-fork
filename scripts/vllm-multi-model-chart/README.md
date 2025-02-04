@@ -45,17 +45,11 @@ The Helm chart includes:
 
 1. Before installing the Helm chart, update the [`values.yaml` file](values.yaml) to configure your job. Important
    values that you will need to set are:
-   * Set `image.repository` and `image.tag` based on the docker image that you have built and pushed
-   * Set`secret.encodedToken` with your base64 encoded Hugging Face token, if you are using gated models. The snippet
-     below demonstrates how a HF token can be encoded from a terminal. Copy and paste the encoded token into the
-     values file.
-     ```
-     $ echo hf_YOUR_TOKEN | base64
-     aGZfWU9VUl9UT0tFTgo=
-     ```
+   * Set `image.repository` and `image.tag` based on the docker image that you have built and pushed.
+   * Set`secret.hf_token` with your Hugging Face token, if you are using gated models.
    * The `args` section has the command used launch vLLM. In those args, specify the name of the models to serve.
-   * Set your Kubernetes storage class name in the `storage.storageClassName` field
-   * The `resources` section defines the resource limits and requests for the deployment
+   * Set your Kubernetes storage class name in the `storage.storageClassName` field.
+   * The `resources` section defines the resource limits and requests for the deployment.
 
 2. After configuring the [`values.yaml` file](values.yaml), the Helm chart can be deployed to the cluster:
    ```
@@ -76,13 +70,13 @@ The Helm chart includes:
    kubectl port-forward svc/gaudi-multi-model-service 8000:80
    ```
 5. Now that the service is up and running, you can use cURL commands to test the deployment. For example:
-   * List the running models
+   * List the running models:
      ```
      curl http://localhost:8000/v1/models
      ```
 
    * Query the served models with prompt inputs (change the `model`, depending on the names of the models that you
-     served):
+     served - by default, the values file uses `meta-llama/Llama-3.1-8B-Instruct` and `mistralai/Mistral-7B-Instruct-v0.3`):
      ```
      curl http://localhost:8000/v1/completions \
         -H "Content-Type: application/json" \

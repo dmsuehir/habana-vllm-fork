@@ -46,12 +46,12 @@ The Helm chart includes:
 1. Before installing the Helm chart, update the [`values.yaml` file](values.yaml) to configure your job. Important
    values that you will need to set are:
    * Set `image.repository` and `image.tag` based on the docker image that you have built and pushed.
-   * Set`secret.hf_token` with your Hugging Face token, if you are using gated models.
+   * Set`secret.hfToken` with your Hugging Face token, if you are using gated models.
    * The `args` section has the command used launch vLLM. In those args, specify the name of the models to serve.
    * Set your Kubernetes storage class name in the `storage.storageClassName` field.
    * The `resources` section defines the resource limits and requests for the deployment.
 
-2. After configuring the [`values.yaml` file](values.yaml), the Helm chart can be deployed to the cluster:
+2. After configuring the [`values.yaml`](values.yaml) file, the Helm chart can be deployed to the cluster:
    ```
    cd scripts/vllm-multi-model-chart
    helm install -f values.yaml gaudi-multi-model .

@@ -20,4 +20,5 @@
 .project
 .idea/
 *.tmproj
+.venv/
 .vscode/
